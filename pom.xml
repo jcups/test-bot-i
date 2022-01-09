@@ -13,9 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>test-bot-i</name>
     <description>test-bot-i</description>
-    <properties>
-        <java.version>11</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.telegram</groupId>
