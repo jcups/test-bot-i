@@ -39,7 +39,7 @@ public class CommandHandler {
     }
 
     private PartialBotApiMethod<?> getGif(Message message) {
-        InputFile file = message.getText().split(" ")[1] == null ?
+        InputFile file = message.getText().split(" ").length <= 1 ?
                 giphyApiService.getRandom("random") :
                 giphyApiService.getRandom(message.getText().split(" ")[1]);
 
