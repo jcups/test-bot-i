@@ -1,0 +1,8 @@
+bot:
+  name: ${BOT_NAME}
+  token: ${BOT_TOKEN}
+giphy:
+  key: ${GIPHY_KEY}
+logging:
+  level:
+    org.springframework.web: debug
