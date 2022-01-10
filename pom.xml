@@ -8,6 +8,9 @@
         <version>2.6.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
     <groupId>ru.jcups</groupId>
     <artifactId>test-bot-i</artifactId>
     <version>0.0.1-SNAPSHOT</version>
