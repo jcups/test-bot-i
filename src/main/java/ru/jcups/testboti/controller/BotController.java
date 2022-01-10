@@ -1,5 +1,7 @@
 package ru.jcups.testboti.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,5 +22,10 @@ public class BotController {
     public BotApiMethod<?> handle(@RequestBody Update update) {
         bot.onUpdateReceived(update);
         return null;
+    }
+    
+    @GetMapping("/")
+    public ResponseEntity<?> get() {
+        return ResponseEntity.ok().build();
     }
 }
