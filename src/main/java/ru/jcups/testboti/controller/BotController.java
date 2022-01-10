@@ -23,7 +23,7 @@ public class BotController {
         bot.onUpdateReceived(update);
         return null;
     }
-    
+
     @GetMapping("/")
     public ResponseEntity<?> get() {
         return ResponseEntity.ok().build();
