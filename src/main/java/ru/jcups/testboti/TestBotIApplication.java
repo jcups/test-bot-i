@@ -17,7 +17,6 @@ public class TestBotIApplication {
     private String apiKey;
 
     public static void main(String[] args) {
-
         ConfigurableApplicationContext context = SpringApplication.run(TestBotIApplication.class, args);
         Bot bot = context.getBean(Bot.class);
         try {

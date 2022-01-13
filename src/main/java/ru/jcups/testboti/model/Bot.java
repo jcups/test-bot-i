@@ -28,10 +28,8 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            PartialBotApiMethod<?> method = updateHandler.handle(update);
-            if (method instanceof BotApiMethod) {
-                this.execute((SendMessage) method);
-            } else {
+            PartialBotApiMethod<?> method = updateHandler.handle(update, this);
+            if (method instanceof SendAnimation) {
                 this.execute((SendAnimation) method);
             }
         } catch (TelegramApiException e) {

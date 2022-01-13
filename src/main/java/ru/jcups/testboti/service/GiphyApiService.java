@@ -11,6 +11,8 @@ import ru.jcups.testboti.utils.PP;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Service
 public class GiphyApiService {
@@ -21,13 +23,13 @@ public class GiphyApiService {
         this.giphy = new Giphy(apiKey, new HttpRequestSender());
     }
 
-    public String saveGif(String uri, String filePath){
-        filePath = FILE_PATH + filePath + ".gif";
+    public String saveGif(String uri, String filePath) {
+//        filePath = FILE_PATH + filePath + ".gif";
         try {
             URL url = new URL(uri);
             InputStream is = url.openStream();
-            File file = new File(filePath);
-            System.out.println(filePath);
+            File file = File.createTempFile(FILE_PATH, ".gif");
+            System.out.println(file);
             OutputStream os = new FileOutputStream(file);
 
             byte[] b = new byte[2048];
@@ -39,7 +41,8 @@ public class GiphyApiService {
 
             is.close();
             os.close();
-            return filePath;
+            PP.print(file);
+            return file.getCanonicalPath();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
