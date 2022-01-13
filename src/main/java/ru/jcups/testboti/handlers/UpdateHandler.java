@@ -23,7 +23,7 @@ public class UpdateHandler {
         Message message = update.getMessage();
         String messageText = message.getText();
         if (messageText.startsWith("/")) {
-            return commandHandler.handle(message);
+            return commandHandler.handle(message, bot);
         } else {
             textMessageHandler.handle(message, bot);
             return null;
