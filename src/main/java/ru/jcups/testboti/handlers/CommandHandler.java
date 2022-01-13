@@ -35,12 +35,14 @@ public class CommandHandler {
                     } else {
                         bot.execute(send);
                     }
+                    return null;
                 case "/video":
                     break;
                 case "/photo":
                     break;
                 case "/currencies":
                     bot.execute(getCurrencies(message));
+                    return null;
                 default:
                     break;
             }
