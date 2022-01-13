@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CurrencyPojo {
+public class OpenExchangeRatesPojo {
     String disclaimer;
     String license;
     Long timestamp;

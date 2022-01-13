@@ -1,7 +1,6 @@
 package ru.jcups.testboti.handlers;
 
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendAnimation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -10,6 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.model.Bot;
 import ru.jcups.testboti.service.GiphyApiService;
 import ru.jcups.testboti.service.OpenExchangeRatesService;
+import ru.jcups.testboti.utils.Messages;
 
 @Component
 public class CommandHandler {
@@ -17,17 +17,22 @@ public class CommandHandler {
     private final GiphyApiService giphyApiService;
     private final OpenExchangeRatesService openExchangeRatesService;
 
+
     public CommandHandler(GiphyApiService giphyApiService, OpenExchangeRatesService openExchangeRatesService) {
         this.giphyApiService = giphyApiService;
         this.openExchangeRatesService = openExchangeRatesService;
     }
 
-    public PartialBotApiMethod<?> handle(Message message, Bot bot) {
+    public void handle(Message message, Bot bot) {
         String messageText = message.getText().split(" ").length > 1 ?
                 message.getText().split(" ")[0] :
                 message.getText();
         try {
             switch (messageText) {
+                case "/start":
+                case "/help":
+                    bot.execute(new SendMessage(String.valueOf(message.getChatId()), Messages.HELP));
+                    break;
                 case "/gif":
                     SendAnimation send = getGif(message);
                     if (send == null) {
@@ -35,22 +40,17 @@ public class CommandHandler {
                     } else {
                         bot.execute(send);
                     }
-                    return null;
-                case "/video":
-                    break;
                 case "/photo":
                     break;
                 case "/currencies":
                     bot.execute(getCurrencies(message));
-                    return null;
                 default:
+                    bot.execute(new SendMessage(String.valueOf(message.getChatId()), messageText));
                     break;
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
-        return new SendMessage(String.valueOf(message.getChatId()), messageText);
     }
 
     private SendMessage getCurrencies(Message message) {
@@ -69,7 +69,7 @@ public class CommandHandler {
                 response = openExchangeRatesService.getLatest(parts[1], parts[2]);
         }
         if (response == null || response.isEmpty()) {
-            sendMessage.setText("Error currencies is not found");
+            sendMessage.setText(Messages.CURRENCY_NOT_FOUND);
         } else {
             sendMessage.setText(response);
         }

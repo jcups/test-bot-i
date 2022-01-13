@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface OpenExchangeRatesClient {
 
     @GetMapping("/latest.json?app_id={app_id}")
-    CurrencyPojo getLatest(@PathVariable String app_id);
+    OpenExchangeRatesPojo getLatest(@PathVariable String app_id);
 
 }

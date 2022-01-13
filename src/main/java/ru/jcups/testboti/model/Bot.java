@@ -3,8 +3,6 @@ package ru.jcups.testboti.model;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.handlers.UpdateHandler;
@@ -26,10 +24,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            PartialBotApiMethod<?> method = updateHandler.handle(update, this);
-            if (method != null) {
-                this.execute((SendMessage) method);
-            }
+            updateHandler.handle(update, this);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.model.Bot;
 import ru.jcups.testboti.utils.CF;
+import ru.jcups.testboti.utils.Messages;
 
 @Component
 public class TextMessageHandler {
@@ -28,7 +29,7 @@ public class TextMessageHandler {
                 }
                 break;
             default:
-                bot.execute(new SendMessage(message.getChatId().toString(),"А? Чего?\nНе понял тебя.."));
+                bot.execute(new SendMessage(message.getChatId().toString(), Messages.INCORRECT_INPUT));
                 break;
         }
     }
