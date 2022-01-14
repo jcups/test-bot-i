@@ -1,9 +1,7 @@
 package ru.jcups.testboti.handlers;
 
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendAnimation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.model.Bot;
@@ -38,12 +36,8 @@ public class CommandHandler {
                     bot.execute(new SendMessage(chatId, Messages.HELP));
                     break;
                 case "/gif":
-                    SendAnimation send = getGif(message);
-                    if (send == null) {
-                        bot.execute(new SendMessage(chatId, messageText));
-                    } else {
-                        bot.execute(send);
-                    }
+                    giphyApiService.getRandom(chatId, (message.getText().split(" ").length <= 1 ?
+                            null : message.getText().split(" ")[1]),bot);
                     break;
                 case "/photo":
                     unsplashService.getRandom(chatId, bot);
@@ -82,13 +76,5 @@ public class CommandHandler {
             sendMessage.setText(response);
         }
         return sendMessage;
-    }
-
-    private SendAnimation getGif(Message message) {
-        InputFile file = message.getText().split(" ").length <= 1 ?
-                giphyApiService.getRandom(null) :
-                giphyApiService.getRandom(message.getText().split(" ")[1]);
-        return file == null ?
-                null : new SendAnimation(String.valueOf(message.getChatId()), file);
     }
 }

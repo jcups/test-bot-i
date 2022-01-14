@@ -3,16 +3,19 @@ package ru.jcups.testboti.service;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendAnimation;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.api.GiphyClient;
+import ru.jcups.testboti.model.Bot;
+import ru.jcups.testboti.utils.FUtils;
+import ru.jcups.testboti.utils.Messages;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
 
 @Service
 public class GiphyApiService {
-
-    private static final String FILE_PATH = "src/main/resources/gifs/";
 
     private final GiphyClient client;
 
@@ -23,45 +26,27 @@ public class GiphyApiService {
         this.client = client;
     }
 
-    public InputFile getRandom(String tag) {
+    public void getRandom(String chatId, String tag, Bot bot) {
+        String json = tag == null ? client.getRandom(apiKey) : client.getRandom(apiKey, tag);
+        File file = FUtils.saveFile(getURIFromJson(json), ".gif");
         try {
-            String json = tag == null ? client.getRandom(apiKey) : client.getRandom(apiKey, tag);
-            String uri = new JsonParser().parse(json)
-                    .getAsJsonObject()
-                    .getAsJsonObject("data")
-                    .getAsJsonObject("images")
-                    .getAsJsonObject("original")
-                    .get("url").getAsString();
-            uri = uri.replaceAll("media.\\.giphy", "i.giphy");
-            String path = saveGif(uri);
-            if (path == null) throw new IOException();
-            return new InputFile(new File(path));
-        } catch (IOException e) {
+            if (file == null) {
+                bot.execute(new SendMessage(chatId, Messages.ERROR_SENDING_FILE));
+            } else {
+                bot.execute(new SendAnimation(chatId, new InputFile(file)));
+            }
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    private String saveGif(String uri) {
-        try {
-            URL url = new URL(uri);
-            InputStream is = url.openStream();
-            File file = File.createTempFile(FILE_PATH, ".gif");
-            OutputStream os = new FileOutputStream(file);
-
-            byte[] b = new byte[2048];
-            int length;
-
-            while ((length = is.read(b)) != -1) {
-                os.write(b, 0, length);
-            }
-
-            is.close();
-            os.close();
-            return file.getCanonicalPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private String getURIFromJson(String json) {
+        String uri = new JsonParser().parse(json)
+                .getAsJsonObject()
+                .getAsJsonObject("data")
+                .getAsJsonObject("images")
+                .getAsJsonObject("original")
+                .get("url").getAsString();
+        return uri.replaceAll("media.\\.giphy", "i.giphy");
     }
 }

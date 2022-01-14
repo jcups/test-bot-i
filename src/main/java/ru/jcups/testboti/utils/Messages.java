@@ -18,4 +18,6 @@ public class Messages {
 
     public static final String INCORRECT_INPUT = "А? Чего?\nНе понял тебя..";
 
+    public static final String ERROR_SENDING_FILE = "Произошла ошибка при отправке файла";
+
 }
