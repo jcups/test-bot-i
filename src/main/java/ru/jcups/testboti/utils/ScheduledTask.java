@@ -15,7 +15,7 @@ public class ScheduledTask {
         this.ratesService = ratesService;
     }
 
-    @Scheduled(fixedRate = 1800000)
+    @Scheduled(fixedRate = 300000)
     public void reportCurrentTime() {
         ratesService.getLatest();
     }

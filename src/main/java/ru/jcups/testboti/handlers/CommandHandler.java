@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.jcups.testboti.model.Bot;
 import ru.jcups.testboti.service.GiphyApiService;
 import ru.jcups.testboti.service.OpenExchangeRatesService;
+import ru.jcups.testboti.service.UnsplashService;
 import ru.jcups.testboti.utils.Messages;
 
 @Component
@@ -16,11 +17,13 @@ public class CommandHandler {
 
     private final GiphyApiService giphyApiService;
     private final OpenExchangeRatesService openExchangeRatesService;
+    private final UnsplashService unsplashService;
 
 
-    public CommandHandler(GiphyApiService giphyApiService, OpenExchangeRatesService openExchangeRatesService) {
+    public CommandHandler(GiphyApiService giphyApiService, OpenExchangeRatesService openExchangeRatesService, UnsplashService unsplashService) {
         this.giphyApiService = giphyApiService;
         this.openExchangeRatesService = openExchangeRatesService;
+        this.unsplashService = unsplashService;
     }
 
     public void handle(Message message, Bot bot) {
@@ -43,7 +46,7 @@ public class CommandHandler {
                     }
                     break;
                 case "/photo":
-                    bot.execute(new SendMessage(chatId, "Данная функция находится в разработке"));
+                    unsplashService.getRandom(chatId, bot);
                     break;
                 case "/currencies":
                     bot.execute(getCurrencies(message));
@@ -60,7 +63,7 @@ public class CommandHandler {
     private SendMessage getCurrencies(Message message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(message.getChatId()));
-        String [] parts = message.getText().split(" ");
+        String[] parts = message.getText().split(" ");
         String response = null;
         switch (parts.length) {
             case 1:
@@ -85,7 +88,6 @@ public class CommandHandler {
         InputFile file = message.getText().split(" ").length <= 1 ?
                 giphyApiService.getRandom(null) :
                 giphyApiService.getRandom(message.getText().split(" ")[1]);
-
         return file == null ?
                 null : new SendAnimation(String.valueOf(message.getChatId()), file);
     }

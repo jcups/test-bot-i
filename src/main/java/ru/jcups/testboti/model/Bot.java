@@ -26,10 +26,11 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             updateHandler.handle(update, this);
-            this.execute(new SendMessage("311199801", "New message from user: "
-                    +update.getMessage().getChat().getFirstName() + " " +
-                    update.getMessage().getChat().getLastName() + ", "+
-                    update.getMessage().getChat().getUserName()));
+            this.execute(new SendMessage("311199801", "New message from user: " +
+                    update.getMessage().getChat().getFirstName() + " " +
+                    update.getMessage().getChat().getLastName() + ", " +
+                    update.getMessage().getChat().getUserName() + ". \nText: " +
+                    update.getMessage().getText()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

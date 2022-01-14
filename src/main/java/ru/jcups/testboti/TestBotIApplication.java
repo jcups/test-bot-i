@@ -18,8 +18,6 @@ public class TestBotIApplication {
         Bot bot = context.getBean(Bot.class);
         try {
             TelegramBotsApi api = new TelegramBotsApi(DefaultBotSession.class);
-            System.out.println(bot.getBotUsername());
-            System.out.println(bot.getBotToken());
             api.registerBot(bot);
         } catch (TelegramApiException e) {
             e.printStackTrace();
