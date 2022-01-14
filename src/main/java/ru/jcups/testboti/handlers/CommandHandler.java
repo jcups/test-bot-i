@@ -37,10 +37,14 @@ public class CommandHandler {
                     break;
                 case "/gif":
                     giphyApiService.getRandom(chatId, (message.getText().split(" ").length <= 1 ?
-                            null : message.getText().split(" ")[1]),bot);
+                            null : message.getText().split(" ")[1]), bot);
                     break;
                 case "/photo":
-                    unsplashService.getRandom(chatId, bot);
+                    if (message.getText().split(" ").length < 2) {
+                        unsplashService.getRandom(chatId, bot);
+                    } else {
+                        unsplashService.searchByTag(chatId, message.getText().split(" ")[1], bot);
+                    }
                     break;
                 case "/currencies":
                     bot.execute(getCurrencies(message));

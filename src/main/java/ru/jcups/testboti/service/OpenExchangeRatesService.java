@@ -2,8 +2,8 @@ package ru.jcups.testboti.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.jcups.testboti.api.OpenExchangeRatesPojo;
-import ru.jcups.testboti.api.OpenExchangeRatesClient;
+import ru.jcups.testboti.api.openexchangerates.OpenExchangeRatesPojo;
+import ru.jcups.testboti.api.openexchangerates.OpenExchangeRatesClient;
 import ru.jcups.testboti.utils.Messages;
 
 import java.util.Map;

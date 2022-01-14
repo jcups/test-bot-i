@@ -1,14 +1,13 @@
-package ru.jcups.testboti.api;
+package ru.jcups.testboti.api.unsplash;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Map;
+import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GiphyPojo {
-    Map<String, Object> data;
-    Map<String, Object> meta;
+public class SearchImagesUnsplashPojo {
+    List<ImageUnsplashPojo> results;
 }

@@ -1,4 +1,4 @@
-package ru.jcups.testboti.api;
+package ru.jcups.testboti.api.openexchangerates;
 
 import lombok.AccessLevel;
 import lombok.Data;

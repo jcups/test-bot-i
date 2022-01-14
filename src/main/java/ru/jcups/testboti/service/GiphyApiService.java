@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendAnimation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.jcups.testboti.api.GiphyClient;
+import ru.jcups.testboti.api.giphy.GiphyClient;
 import ru.jcups.testboti.model.Bot;
 import ru.jcups.testboti.utils.FUtils;
 import ru.jcups.testboti.utils.Messages;
