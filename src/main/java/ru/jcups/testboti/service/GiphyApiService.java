@@ -1,12 +1,10 @@
 package ru.jcups.testboti.service;
 
-import at.mukprojects.giphy4j.Giphy;
-import at.mukprojects.giphy4j.dao.HttpRequestSender;
-import at.mukprojects.giphy4j.entity.search.SearchGiphy;
-import at.mukprojects.giphy4j.entity.search.SearchRandom;
-import at.mukprojects.giphy4j.exception.GiphyException;
+import com.google.gson.JsonParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import ru.jcups.testboti.api.GiphyClient;
 
 import java.io.*;
 import java.net.URL;
@@ -16,23 +14,29 @@ public class GiphyApiService {
 
     private static final String FILE_PATH = "src/main/resources/gifs/";
 
-    private final Giphy giphy;
+    private final GiphyClient client;
 
-    public GiphyApiService(String giphyKey) {
-        this.giphy = new Giphy(giphyKey, new HttpRequestSender());
+    @Value("${giphy.key}")
+    private String apiKey;
+
+    public GiphyApiService(GiphyClient client) {
+        this.client = client;
     }
 
     public InputFile getRandom(String tag) {
         try {
-            SearchRandom random = giphy.searchRandom(tag);
-            String id = random.getData().getId();
-            SearchGiphy searchGiphy = giphy.searchByID(id);
-            String uri = searchGiphy.getData().getImages().getOriginal().getUrl();
+            String json = tag == null ? client.getRandom(apiKey) : client.getRandom(apiKey, tag);
+            String uri = new JsonParser().parse(json)
+                    .getAsJsonObject()
+                    .getAsJsonObject("data")
+                    .getAsJsonObject("images")
+                    .getAsJsonObject("original")
+                    .get("url").getAsString();
             uri = uri.replaceAll("media.\\.giphy", "i.giphy");
             String path = saveGif(uri);
             if (path == null) throw new IOException();
             return new InputFile(new File(path));
-        } catch (GiphyException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

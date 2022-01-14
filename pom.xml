@@ -8,21 +8,25 @@
         <version>2.6.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <properties>
-        <java.version>11</java.version>
-    </properties>
+
     <groupId>ru.jcups</groupId>
     <artifactId>test-bot-i</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>test-bot-i</name>
     <description>test-bot-i</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <spring-cloud.version>2021.0.0</spring-cloud.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
             <version>5.4.0.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -35,9 +39,9 @@
         </dependency>
 
         <dependency>
-            <groupId>at.mukprojects</groupId>
-            <artifactId>giphy4j</artifactId>
-            <version>1.0.1</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.9</version>
         </dependency>
 
         <dependency>
@@ -46,6 +50,18 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

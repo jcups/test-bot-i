@@ -1,5 +1,6 @@
 package ru.jcups.testboti.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.jcups.testboti.api.OpenExchangeRatesPojo;
 import ru.jcups.testboti.api.OpenExchangeRatesClient;
@@ -11,11 +12,12 @@ import java.util.Map;
 public class OpenExchangeRatesService {
 
     private final OpenExchangeRatesClient client;
-    private final String app_id;
 
-    public OpenExchangeRatesService(OpenExchangeRatesClient client, String currenciesKey) {
+    @Value("${openexchangerates.key}")
+    private String app_id;
+
+    public OpenExchangeRatesService(OpenExchangeRatesClient client) {
         this.client = client;
-        this.app_id = currenciesKey;
     }
 
     public String getLatest() {
